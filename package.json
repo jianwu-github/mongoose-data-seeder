@@ -24,6 +24,10 @@ email: "hellojianwu@gmail.com"
 }
 ],
 license: "MIT",
+dependencies: {
+"mongodb": "^3.1.9",
+"mongoose": "^5.3.12"
+},
 bugs: {
 url: "https://github.com/jianwu-github/mongoose-data-seeder/issues"
 },
