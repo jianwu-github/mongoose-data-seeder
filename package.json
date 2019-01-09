@@ -1,4 +1,5 @@
-{ "name": "mongoose-data-seeder",
+{
+  "name": "mongoose-data-seeder",
   "version": "1.0.0",
   "description": "Seed your MongoDB database with a set of collections including referential relationship using mongoose",
   "main": "index.js",
