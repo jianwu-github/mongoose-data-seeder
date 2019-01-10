@@ -1,7 +1,7 @@
 const command = require('commander')
 const mongoose = require('mongoose')
 
-const MongooseDataSeeder = require('./index')
+const MongooseDataSeeder = require('mongoose-data-seeder')
 
 const dbUrl = 'mongodb://mongoadmin:welcome@localhost:27017/?authMechanism=DEFAULT&authSource=admin'
 
@@ -58,7 +58,7 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
         console.log("Failed to load seedData into test database")
         console.log(err)
 
-        process.exit(0)
+        process.exit(1)
       })
   }
 })

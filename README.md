@@ -114,7 +114,7 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
         console.log("Failed to load seedData into test database")
         console.log(err)
 
-        process.exit(0)
+        process.exit(1)
       })
   }
 })
@@ -122,7 +122,28 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
 
 #### Running script to load seed data into MongoDB
 ```
-$ node test-seeder.js --data [path to data.json file]
+$ node test-seeder.js --data ./data.json
+Connected to MongoDB, Prepare to load seed data from ./data.json ...
+seedData is loaded into test database!
+{ teams:
+  { teamA:
+    { name: 'Team A',
+      company: 'Startup',
+      _id: 5c36f4ea400d5ab55a981a98,
+      __v: 0
+    }
+  },
+  users:
+  { user1:
+    { firstName: 'Joe',
+      name: 'User One',
+      email: 'foo@bar.com',
+      teamId: 5c36f4ea400d5ab55a981a98,
+      _id: 5c36f4ea400d5ab55a981a99,
+      __v: 0
+    }
+  }
+}
 ```
 
 ### License
