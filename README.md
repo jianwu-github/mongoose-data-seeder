@@ -15,39 +15,80 @@ $ npm install mongoose-data-seeder
 $ docker run -d --name local-mongo -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=welcome -e MONGO_INITDB_DATABASE=test mongo:3.6
 ```
 
-#### Prepare seed data
+#### Create seed data project
+```
+$ npm init
+```
+
+#### Install required packages
+```
+$ npm install --save mongo mongoose mongoose-data-seeder commander
+```
+
+#### Prepare seed data "data.json" including document referencing another document
 
 ```json
 {
+  "teams": {
+    "_model": "teams",
+    "teamA": {
+      "name": "Team A",
+      "company": "Startup"
+    }
+  },
   "users": {
-    "_model": "User",
-    "foo": {
-      "firstName": "Foo",
-      "name": "Bar",
-      "email": "foo@bar.com"
+    "_model": "users",
+    "user1": {
+      "firstName": "Joe",
+      "name": "User One",
+      "email": "foo@bar.com",
+      "teamId": "->teams.teamA._id"
     }
   }
 }
 ```
 
-#### Using 'mongoose-data-seeder' to load seed data into Mongo database
+If you want to know more about loading documents that have a reference to another document, please see the original Sam Verschueren's [mongoose-seeder](https://github.com/SamVerschueren/mongoose-seeder) project
+
+
+#### Create test-seeder.js using 'mongoose-data-seeder' to load seed data into Mongo database
 
 ```JavaScript
+const command = require('commander')
 const mongoose = require('mongoose')
+
+const MongooseDataSeeder = require('mongoose-data-seeder')
 
 const dbUrl = 'mongodb://mongoadmin:welcome@localhost:27017/?authMechanism=DEFAULT&authSource=admin'
 
 // create or import mongoose schema
+const TeamSchema = mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  name: {type: String, required: true},
+  company: {type: String},
+})
+
+mongoose.model('teams', TeamSchema)
+
 const UserSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   firstName: {type: String, required: true},
   name: {type: String, required: true},
   fullName: {type: String},
   email: {type: String, required: true},
-  birthday: {type: Date}
+  birthday: {type: Date},
+  teamId: {type: mongoose.Schema.Types.ObjectId, ref: 'teams'}
 })
 
-mongoose.model('User', UserSchema)
+mongoose.model('users', UserSchema)
+
+command
+  .version('1.0.0')
+  .option('-d --data [jsonfile]', 'seed data in json file')
+  .parse(process.argv)
+
+const jsonDataFile = command.data ? command.data : './data.json'
+const dropCollection = true
 
 // connect to MongoDB
 mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
@@ -56,11 +97,10 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
     console.log(err)
     process.exit(1)
   } else {
-    console.log("Connected to MongoDB, Prepare to seed data ...")
+    console.log(`Connected to MongoDB, Prepare to load seed data from ${jsonDataFile} ...`)
 
-    const seedData = require('./data')
+    const seedData = require(jsonDataFile)
 
-    const MongooseDataSeeder = require('mongoose-data-seeder')
     const mongoSeeder = new MongooseDataSeeder({dropCollection: true})
 
     mongoSeeder
@@ -81,10 +121,10 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
 })
 ```
 
-#### Loading seed data with referential relationship
-
-For loading documents that have a reference to another document, please see the original Sam Verschueren's [mongoose-seeder](https://github.com/SamVerschueren/mongoose-seeder) project
-
+#### Running script to load seed data into MongoDB
+```
+$ node test-seeder.js --data [path to data.json file]
+```
 
 ### License
 

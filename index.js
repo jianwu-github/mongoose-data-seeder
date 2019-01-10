@@ -221,7 +221,7 @@ class MongooseDataSeeder {
 
         return Promise.resolve()
           .then(() => {
-            if (this.dropCollections) {
+            if (this.dropCollection) {
               // Drop the collection
               return mongoose.connection.db
                 .listCollections({name: Model.collection.name}).toArray()

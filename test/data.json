@@ -1,10 +1,18 @@
 {
+  "teams": {
+    "_model": "teams",
+    "teamA": {
+      "name": "Team A",
+      "company": "Startup"
+    }
+  },
   "users": {
-    "_model": "User",
-    "foo": {
-      "firstName": "Foo",
-      "name": "Bar",
-      "email": "foo@bar.com"
+    "_model": "users",
+    "user1": {
+      "firstName": "Joe",
+      "name": "User One",
+      "email": "foo@bar.com",
+      "teamId": "->teams.teamA._id"
     }
   }
 }
