@@ -120,7 +120,7 @@ mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
 })
 ```
 
-#### Running script to load seed data into MongoDB
+#### Run "test-seeder.js" script loading seed data into MongoDB
 ```
 $ node test-seeder.js --data ./data.json
 Connected to MongoDB, Prepare to load seed data from ./data.json ...
