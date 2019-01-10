@@ -88,7 +88,6 @@ command
   .parse(process.argv)
 
 const jsonDataFile = command.data ? command.data : './data.json'
-const dropCollection = true
 
 // connect to MongoDB
 mongoose.connect(dbUrl, {dbName: 'test', autoIndex: false}, function(err){
