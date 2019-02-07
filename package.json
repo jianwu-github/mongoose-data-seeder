@@ -1,6 +1,6 @@
 {
   "name": "mongoose-data-seeder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Seed your MongoDB database with a set of collections including referential relationship using mongoose",
   "main": "index.js",
   "repository": {

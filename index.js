@@ -113,7 +113,11 @@ class MongooseDataSeeder {
    * @returns parsed value
    */
   parseValue(parent, value) {
-    if (typeof value === 'object' && !(value instanceof Array)) {
+    if (value === undefined) {
+      return undefined
+    } else if (value === null) {
+      return null
+    } else if (typeof value === 'object' && !(value instanceof Array)) {
       return this.unwind(value)
     } else if (value instanceof Array) {
       return value.map(val => this.parseValue(parent, val))
